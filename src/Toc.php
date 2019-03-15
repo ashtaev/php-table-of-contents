@@ -1,5 +1,7 @@
 <?php
 
+namespace ashtaev;
+
 class Toc {
 
     private $content;
