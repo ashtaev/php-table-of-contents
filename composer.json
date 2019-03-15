@@ -1,0 +1,17 @@
+{
+    "name": "ashtaev/toc",
+    "type": "library",
+    "description": "Простой PHP скрипт для создания содержания статьи на основе заголовков.",
+    "keywords": ["table of contents", "TOC"],
+    "homepage": "http://github.com/ashtaev/toc",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladislav Ashtaev",
+            "email": "vl.ashtaev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"ashtaev\\": "src/"}
+    }
+}

@@ -1,0 +1,22 @@
+<div class="toc">
+<div>Содержание</div>
+
+{% for item in tocc %}
+    {% if item.list_open %}
+        <ol>
+    {% endif %}
+        {% if item.item_open %}
+            <li>
+        {% endif %}
+        {% if item.text %}
+            <a href="#{{ item.href }}">{{ item.text }}</a>
+        {% endif %}
+        {% if item.item_close %}
+            </li>
+        {% endif %}
+    {% if item.list_close %}
+        </ol>
+    {% endif %}
+{% endfor %}
+
+</div>
