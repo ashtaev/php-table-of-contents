@@ -1,5 +1,5 @@
 <div class="toc">
-<div>Содержание</div>
+<div>Contents</div>
 
 {% for item in tocc %}
     {% if item.list_open %}
@@ -9,7 +9,7 @@
             <li>
         {% endif %}
         {% if item.text %}
-            <a href="#{{ item.href }}">{{ item.text }}</a>
+            <a href="#{{ item.href }}" title="{{ item.text }}">{{ item.text }}</a>
         {% endif %}
         {% if item.item_close %}
             </li>

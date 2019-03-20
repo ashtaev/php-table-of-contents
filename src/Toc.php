@@ -2,6 +2,12 @@
 
 namespace ashtaev;
 
+/**
+ * Table of contents generation library.
+ *
+ * @author Vladislav Ashtaev <vl.ashtaev@gmail.com>
+ * @see https://github.com/ashtaev/php-table-of-contents
+ */
 class Toc {
 
     private $content;
@@ -13,6 +19,9 @@ class Toc {
     private $shortcode = "#<!--\[toc\]-->#is";
 
 
+    /**
+     * @param string $content A post includes the headers.
+     */
     public function __construct($content) {
 
         preg_match_all("#<[hH]([1-6])>(.*?)</[hH][1-6]>#is", $content, $match);
@@ -25,7 +34,14 @@ class Toc {
     }
 
 
+    /**
+     * Creates an array of table of contents data structure.
+     *
+     * @return array
+     */
     public function getDataToc() {
+
+        $toc = [];
 
         $count = $this->count;
         $level = $this->level;
@@ -34,6 +50,7 @@ class Toc {
 
         for ($i=0, $j=0; $i<$count; $i++, $j++) {
 
+            // the first header
             if ($i === 0) {
                 $toc[$i]['list_open']  = true;
                 $toc[$i]['item_open']  = true;
@@ -45,6 +62,7 @@ class Toc {
                 continue;
             }
 
+            // the last header
             if ($i == $count-1) {
                 $toc[$j]['list_open']  = $level[$i] > $level[$i-1];
                 $toc[$j]['item_open']  = true;
@@ -64,6 +82,7 @@ class Toc {
                 break;
             }
 
+            //other header
             $toc[$j]['list_open']  = $level[$i] > $level[$i-1];
             $toc[$j]['item_open']  = true;
             $toc[$j]['text']       = $text[$i];
@@ -86,6 +105,37 @@ class Toc {
     }
 
 
+    /**
+     * Define the location of the table of contents in the article.
+     *
+     * @param string $place A post includes the headers.
+     * It can take one of three values: "top", "title" or "shortcode".
+     * Top: places the table of contents at the beginning of the article.
+     * Title: places the table of contents before the first heading [default].
+     * Shortcode: places the table of contents at the label location.
+     */
+    public function setPlace($place) {
+
+        $this->place = $place;
+    }
+
+
+    /**
+     * Define the shortcode in the post.
+     *
+     * @param string $shortcode A post includes the headers.
+     */
+    public function setShortcode($shortcode) {
+
+        $this->shortcode = "#" . preg_quote($shortcode) . "#is";
+    }
+
+
+    /**
+     * Get a modified post.
+     *
+     * @return string
+     */
     public function getPost() {
 
         $content = $this->content;
@@ -111,16 +161,27 @@ class Toc {
     }
 
 
+    /**
+     * Get a generated table of contents.
+     *
+     * @return string
+     */
     public function getToc() {
         ob_start();
         $dataToc = $this->getDataToc();
-        include "templates/toc.php";
+        include "../templates/toc.php";
         $toc = ob_get_clean();
 
         return $toc;
     }
 
 
+    /**
+     * Get a modified post with a generated table of contents.
+     * By default, the table of contents is placed before the first header.
+     *
+     * @return string
+     */
     public function getPostWithToc() {
         switch ($this->place) {
             case "top":
@@ -137,31 +198,22 @@ class Toc {
     }
 
 
-    private function getHref($str) {
+    /**
+     * @access protected
+     * @return string
+     */
+    protected function getHref($str) {
 
         return "#" . str_replace(' ', '_', $str);
     }
 
 
-    private function getTagId($str) {
+    /**
+     * @access protected
+     * @return string
+     */
+    protected function getTagId($str) {
 
         return str_replace(' ', '_', $str);
-    }
-
-
-    public function setPlace($place) {
-
-        $this->place = $place;
-    }
-
-
-    public function setShortcode($shortcode) {
-
-        $this->shortcode = "#" . preg_quote($shortcode) . "#is";
-    }
-
-
-    public function getSC() {
-        return $this->shortcode;
     }
 }

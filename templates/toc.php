@@ -9,7 +9,7 @@
             <li>
     <?php endif ?>
     <?php if ($item['text']): ?>
-                <a href="<?= $item['href'] ?>"><?= $item['text'] ?></a>
+                <a href="<?= $item['href'] ?>" title="<?= $item['text'] ?>"><?= $item['text'] ?></a>
     <?php endif ?>
     <?php if ($item['item_close']): ?>
             </li>
